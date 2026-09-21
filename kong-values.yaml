@@ -1,0 +1,24 @@
+# Chart: kong/ingress (installs Kong Gateway + Kong Ingress Controller)
+gateway:
+  image:
+    repository: kong
+  env:
+    database: "off"        # DB-less mode, config comes from Kubernetes resources
+  proxy:
+    enabled: true
+    type: NodePort
+    http:
+      enabled: true
+      servicePort: 80
+      nodePort: 30080      # fixed port so it's predictable
+    tls:
+      enabled: true
+      servicePort: 443
+      nodePort: 30443
+  admin:
+    enabled: true
+    type: ClusterIP        # keep the admin API internal only
+
+controller:
+  ingressController:
+    ingressClass: kong
